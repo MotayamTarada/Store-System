@@ -1,0 +1,133 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_Layout";
+    var Id = ViewBag.UserId;
+}
+@model List<Store.Infrastructure.DTO.Order>
+
+<html>
+<head>
+    @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />*@
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.1/css/dataTables.bootstrap5.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.0/css/buttons.dataTables.css" />
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.1/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.0.1/js/dataTables.bootstrap5.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/3.0.0/js/dataTables.buttons.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.0/js/buttons.dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.0/js/buttons.print.min.js"></script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title fw-semibold mb-4">
+                        View All Orders
+                        <span style="float:right; font-size:15px">
+                        </span>
+                    </h5>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table id="myTable" class="table table-striped" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Order ID</th>
+                                                <th>Customer Id</th>
+                                                <th>Product Id</th>
+                                                <th>Total Amount</th>
+                                                <th>Quantity</th>
+                                                <th>Order Date</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>@item.OrderId</td>
+                                                    <td><a asp-controller="Order" asp-action="GetAllOrderUser" asp-route-id="@item.CustomerId">@item.CustomerId</a></td>
+                                                    <td><a asp-controller="Product" asp-action="GetProduct" asp-route-id="@item.ProductId">@item.ProductId</a></td>
+                                                    <td>@item.TotalAmount</td>
+                                                    <td>@item.Quantity</td>
+                                                    <td>@item.OrderDate.ToString("yyyy-MM-dd")</td>
+                                                    <td>
+                                                        <form action="@Url.Action("UpdateAdmin", "Order")" method="post">
+                                                            <input type="hidden" name="OrderId" value="@item.OrderId" />
+                                                            <select class="form-select status-dropdown" name="Status" data-status="@item.Status">
+                                                                <option value="Waiting">Waiting</option>
+                                                                <option value="Finished">Finished</option>
+                                                            </select>
+                                                            <button type="submit" class="btn btn-primary mt-2">Update Status</button>
+                                                        </form>
+                                                    </td>
+                                                    <td style="font-size:18px">
+                                                        <a asp-controller="Order" asp-action="Delete" asp-route-ID="@item.OrderId">
+                                                            <img src="~/assets/img/trash.png" width="28px" height="30px" />
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                    <!-- Container for displaying the total amount -->
+                                    <div id="totalAmount" class="mt-3">
+                                        <strong>Total Amount:</strong> NIS 0.00
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            // Initialize DataTable
+            $('#myTable').DataTable({
+                layout: {
+                    topdown: {
+                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                    }
+                }
+            });
+
+            // Calculate the total amount
+            var totalAmount = 0;
+            $('#myTable tbody tr').each(function () {
+                var amount = parseFloat($(this).find('td').eq(3).text().replace('NIS', '').trim());
+                if (!isNaN(amount)) {
+                    totalAmount += amount;
+                }
+            });
+
+            // Display the total amount
+            $('#totalAmount').html('<strong>Total Amount:</strong> NIS    ' + totalAmount.toFixed(2));
+
+            // Set the initial status dropdown values
+            $('.status-dropdown').each(function () {
+                var status = $(this).data('status');
+                $(this).val(status);
+            });
+        });
+    </script>
+</body>
+</html>

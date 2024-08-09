@@ -1,0 +1,2 @@
+Scaffold-DbContext "Server=localhost;Port=3306;Database=store_system;User=root;Password=0000;"
+MySql.EntityFrameworkCore -OutputDir DBEntities -ContextDir "D:\Asp.net\Work-panch\Store-System\Store.Repositories\Context" -Force

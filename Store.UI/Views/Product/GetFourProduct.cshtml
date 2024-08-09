@@ -1,0 +1,64 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@{
+    Layout = "_Layout";
+    var customerId = ViewBag.UserId;
+}
+@model List<Store.Infrastructure.DTO.Product>
+
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.1/css/dataTables.bootstrap5.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.0/css/buttons.dataTables.css" />
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.1/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.0.1/js/dataTables.bootstrap5.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/3.0.0/js/dataTables.buttons.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.0/js/buttons.dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.0/js/buttons.print.min.js"></script>
+</head>
+<body>
+    <div class="container-fluid">
+    
+
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                @if (@item.Id == 4)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card" style="width: 100%;">
+                            <img src="@Url.Content("~/Files/" + item.Image)" class="card-img-top" alt="Product Image" style="height: 200px; object-fit: cover;" />
+                            <div class="card-body">
+                                <h5 class="card-title">@item.Name</h5>
+                                <p class="card-text">@item.BriefDescription</p>
+                                <p class="card-text"><strong>Price:</strong>  NIS @item.Price</p>
+                                <p class="card-text"><strong>Year:</strong> @item.Id</p>
+                                <form action="@Url.Action("placeOrder", "Order")" method="post">
+                                    <input type="hidden" name="pid" value="@item.ProductId" />
+                                    <input type="hidden" name="cid" value="@customerId" />
+                                    <input type="submit" class="btn btn-warning" value="Add" />
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+
+    <script>
+        // Any additional JavaScript can go here
+    </script>
+</body>
+</html>

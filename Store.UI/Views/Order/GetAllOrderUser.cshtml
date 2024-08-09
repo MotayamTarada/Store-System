@@ -1,0 +1,96 @@
+﻿@model List<Store.Infrastructure.DTO.CustomerOrderDTO> 
+@{
+    Layout = "_Layout";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Orders</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Customer Orders</h1>
+
+        <!-- Customer Information Box -->
+        <div class="card mb-4">
+            <div class="card-header">
+                Customer Information
+            </div>
+            <div class="card-body">
+                <p><strong>Name:</strong> @Model.First().Name</p>
+                <p><strong>Phone:</strong> @Model.First().Telephone</p>
+                <p><strong>Address:</strong> @Model.First().Address</p>
+            </div>
+        </div>
+
+        <!-- Orders Table -->
+        <h2>Orders</h2>
+        <button id="printButton" class="btn btn-primary mb-3">Print</button>
+        <div class="card">
+          
+            <div class="card-body">
+        <table class="table table-striped" id="ordersTable">
+            <thead>
+                <tr>
+                    <th>Product ID</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Total Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.First().Products)
+                {
+                    <tr>
+                        <td>@item.ProductId</td>
+                        <td>@item.ProductName</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.TotalAmount</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        </div>
+        </div>
+        <div id="totalAmount" class="mt-3">
+            <strong>Total Amount:</strong> NIS 0.00
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#printButton').click(function () {
+                window.print();
+            });
+
+
+            // Calculate the total amount
+            var totalAmount = 0;
+            $('#ordersTable tbody tr').each(function () {
+                var amount = parseFloat($(this).find('td').eq(3).text().replace('NIS', '').trim());
+                if (!isNaN(amount)) {
+                    totalAmount += amount;
+                }
+            });
+
+            // Display the total amount
+            $('#totalAmount').html('<strong>Total Amount:</strong> NIS    ' + totalAmount.toFixed(2));
+
+            // Set the initial status dropdown values
+            $('.status-dropdown').each(function () {
+                var status = $(this).data('status');
+                $(this).val(status);
+            });
+        });
+
+      
+
+
+    </script>
+</body>
+</html>

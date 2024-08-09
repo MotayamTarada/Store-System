@@ -1,0 +1,113 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+@{
+    Layout = "_Layout"; // Ensures the _Layout.cshtml layout is used
+}
+
+@section Styles {
+    <style>
+        #one {
+            border: 0px solid;
+            border-radius: 5px;
+            background-color: #2e930e;
+            padding: 50px;
+            margin: 5px;
+        }
+
+            #one:hover {
+                background-color: #0b641a;
+            }
+
+        #two {
+            border: 0px solid;
+            border-radius: 5px;
+            background-color: #138d75;
+            padding: 50px;
+            margin: 5px;
+        }
+
+            #two:hover {
+                background-color: #117864;
+            }
+
+        #three {
+            border: 0px solid;
+            border-radius: 5px;
+            background-color: #2c3e50;
+            padding: 50px;
+            margin: 5px;
+        }
+
+            #three:hover {
+                background-color: #1c2833;
+            }
+
+        #four {
+            border: 0px solid;
+            border-radius: 5px;
+            background-color: #78281f;
+            padding: 50px;
+            margin: 5px;
+        }
+
+            #four:hover {
+                background-color: #c0392b;
+            }
+
+        #five {
+            border: 0px solid;
+            border-radius: 5px;
+            background-color: #e59866;
+            padding: 50px;
+            margin: 5px;
+        }
+
+            #five:hover {
+                background-color: #ca6f1e;
+            }
+
+        .row a {
+            color: white;
+            font-family: serif;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .row {
+            padding: 10px;
+        }
+    </style>
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+<body>
+    <div class="pagetitle">
+        <h1>Dashboard</h1>
+        <div class="row">
+            <div id="one" class="col-md-2">
+                <a href="#">Custom Section 1</a>
+            </div>
+            <div id="two" class="col-md-2">
+                <a href="#">Custom Section 2</a>
+            </div>
+            <div id="three" class="col-md-2">
+                <a href="#">Custom Section 3</a>
+            </div>
+            <div id="four" class="col-md-2">
+                <a href="#">Custom Section 4</a>
+            </div>
+            <div id="five" class="col-md-2">
+                <a href="#">Custom Section 5</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

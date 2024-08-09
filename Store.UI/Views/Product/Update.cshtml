@@ -1,0 +1,105 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@{
+    Layout = "_Layout";
+}
+
+@model Store.Infrastructure.DTO.Product;
+<html>
+<head>
+
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title fw-semibold mb-4">Update Product</h5>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <form asp-action="UpdateProduct" enctype="multipart/form-data">
+                                <div class="row">
+                                    <div class="col-md-4">
+
+                                        <label class="form-label">Prodct Name</label>
+                                        <span class="text-danger">*</span>
+                                        <input type="text" class="form-control" onkeypress="return onlyText();" asp-for="Name" maxlength="50">
+                                        <span asp-validation-for="Name" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">BriefDescription</label>
+                                        <input type="text" class="form-control" asp-for="BriefDescription">
+                                        <span asp-validation-for="BriefDescription" class="text-danger"></span>
+
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Price</label>
+                                        <input type="text" class="form-control" asp-for="Price">
+                                        <span asp-validation-for="Price" class="text-danger"></span>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+
+                                        <label class="form-label">Remark</label>
+                                        <span class="text-danger">*</span>
+                                        <input type="text" class="form-control" asp-for="Remark">
+                                        <span asp-validation-for="Remark" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label"> Quantity</label>
+                                        <span class="text-danger">*</span>
+                                        <input type="text" class="form-control" asp-for="Quantity">
+                                        <span asp-validation-for="Quantity" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Acadimaic Year</label>
+                                        <span class="text-danger">*</span>
+                                        <select class="form-select" asp-for="Id" asp-items="@(ViewBag.Acayear = new SelectList(ViewBag.Acayear,"Id","AcaYearcol"))">
+                                            <option value="">Select an option</option>
+                                        </select>
+                                        <span asp-validation-for="Id" class="text-danger"></span>
+                                    </div>
+
+                               
+                                
+                                <div class="row">
+                                    <label class="form-label"></label>
+                                    <div class="col-md-4">
+                                        <button type="submit" class="btn btn-primary">UpdateProduct</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+</html>
+

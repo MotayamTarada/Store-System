@@ -1,0 +1,306 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    var Id = ViewBag.UserId;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>@ViewData["Title"] - Dentist-Corner|Supplies</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="~/assets/img/AQU.png" rel="icon">
+    <link href="~/assets/img/AQU.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/quill/quill.snow.css" rel="stylesheet">
+    <link href="~/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+    <link href="~/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="~/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="~/assets/css/style.css" rel="stylesheet">
+
+    <!-- =======================================================
+    * Template Name: NiceAdmin
+    * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+    * Updated: Apr 20 2024 with Bootstrap v5.3.3
+    * Author: BootstrapMade.com
+    * License: https://bootstrapmade.com/license/
+    ======================================================== -->
+</head>
+
+<body>
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="header fixed-top d-flex align-items-center">
+        <div class="d-flex align-items-center justify-content-between">
+            <a href="~/index.html" class="logo d-flex align-items-center">
+                <img src="~/assets/img/AQU.png" alt="">
+                <span class="d-none d-lg-block">Dentist-Corner</span>
+                <hr />
+                <span style="color:lightblue;">|Supplies</span>
+            </a>
+            <i class="bi bi-list toggle-sidebar-btn"></i>
+        </div><!-- End Logo -->
+        
+        <!-- Commented out Search Bar -->
+        @*<div class="search-bar">
+            <form class="search-form d-flex align-items-center" method="POST" action="#">
+                <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+                <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+            </form>
+        </div>*@<!-- End Search Bar -->
+
+        <nav class="header-nav ms-auto">
+            <ul class="d-flex align-items-center">
+                <li class="nav-item d-block d-lg-none">
+                    <a class="nav-link nav-icon search-bar-toggle" href="#">
+                        <i class="bi bi-search"></i>
+                    </a>
+                </li><!-- End Search Icon -->
+
+        
+            
+
+                </ul><!-- End Profile Dropdown Items -->
+                
+                </nav><!-- End Header Nav -->
+                </header><!-- End Header -->
+
+                <!-- ======= Sidebar ======= -->
+        <aside id="sidebar" class="sidebar">
+              
+          <ul class="sidebar-nav">
+
+
+     
+
+            @if (Convert.ToInt32(Id) == 18 || Convert.ToInt32(Id) == 19)
+                {
+                <li class="nav-item">
+                    <a class="nav-link collapsed" asp-area="" asp-controller="Home" asp-action="Privacy">
+                        <i class="bi bi-grid"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" asp-controller="Product" asp-action="Create">
+                            <i class="bi bi-database-add"></i><span>Add New Product</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" asp-controller="Product" asp-action="GetAllProduct">
+                            <i class="bi bi-database-check"></i><span>View All Products</span>
+                        </a>
+                    </li>
+
+
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" asp-controller="Order" asp-action="GetAllOrder">
+                            <i class="bi bi-database-check"></i><span>Manage Orders</span>
+                        </a>
+                    </li>
+
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" asp-controller="Customer" asp-action="GetAllCustomer">
+                        <i class="bi bi-file-person-fill"></i><span>View All Customers</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" asp-controller="Order" asp-action="GetAllOrders">
+                        <i class="bi bi-database-check"></i><span>Report To All</span>
+                    </a>
+                </li>
+                }else{
+
+                    <li class="nav-item">
+                    <a class="nav-link collapsed" asp-area="" asp-controller="Home" asp-action="Privacy">
+                        <i class="bi bi-grid"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" asp-controller="Order" asp-route-id="@Id" asp-action="GetOrder">
+                    <i class="bi bi-database-check"></i><span>Place Order</span>
+                </a>
+            </li>
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" asp-controller="Order" asp-action="GetAllOrderUser" asp-route-id="@Id">
+
+               
+                        <i class="bi bi-database-check"></i><span>Report To All</span>
+                    </a>
+                </li>
+
+
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" asp-controller="Customer" asp-action="Index">
+                        <i class="bi bi-person-add"></i><span>Registration</span>
+                    </a>
+                </li>
+
+                
+                }
+           
+                <li class="nav-item">
+                    <a class="nav-link collapsed" asp-controller="Customer" asp-action="login">
+                     <i class="bi bi-box-arrow-right"></i><span>Sign In</span>
+                     </a>
+                </li>
+                <li class="nav-item">
+                     <a class="nav-link collapsed" asp-controller="Customer" asp-action="LogOut">
+                      <i class="bi bi-box-arrow-left"></i><span>Sign Out</span>
+                       </a>
+                </li>
+           </ul>
+         </aside><!-- End Sidebar -->
+         
+          
+                <!-- ======= Main Content ======= -->
+           <main id="main" class="main">
+
+    
+                @RenderBody()
+                </main><!-- End #main -->
+
+                <!-- ======= Footer ======= -->
+    <style>
+        .footer {
+            background-color: #f8f9fa; /* Light grey background color */
+            padding: 20px 0;
+        }
+
+            .footer .contact-info p {
+                font-family: Arial, sans-serif; /* Change this to your preferred font */
+                font-weight: bold;
+                color: #333;
+            }
+    </style>
+
+     <footer id="footer" class="footer">
+         
+        @if (Convert.ToInt32(Id) == 18 || Convert.ToInt32(Id) == 19)
+        {
+            <div class="container">
+                <h2>Leave a Comment</h2>
+                <div class="mb-3">
+                    <input type="text" id="commentInput" class="form-control" placeholder="Enter your comment here">
+                </div>
+                <button id="submitComment" class="btn btn-primary">Submit</button>
+            </div>
+        }
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="copyright">
+                        &copy; <strong><span><img style="width:100px;height:50px" src="~/assets/img/innovatel.png" alt="Innovate Tech Logo" /></span></strong>. All Rights Reserved
+                    </div>
+                    <div class="credits">
+                        Designed by <a href="https://motayamtarada.github.io/InnovateTech/TnnovateTech.html">Innovate Tech</a>
+                    </div>
+                    <div class="contact-info">
+                        <p>
+                            <img src="~/assets/img/AQU.png" alt="" width="35px" height="35px">
+                            Dentist Corner Supplies
+                        </p>
+                        <div class="card"> 
+                        <div class="comment-display" id="commentDisplay"></div>
+                        </div>
+                        <p class="li bi-phone-flip">للاتصال والتواصل</p>
+                        <p class="li ri-whatsapp-line">WhatsApp: <a href="https://wa.me/972569658771">+972569658771</a></p>
+                    </div>
+                    <!-- Placeholder for showing the comment -->
+                </div>
+            </div>
+        </div>
+    </footer><!-- End Footer -->
+
+                <!-- Vendor JS Files -->
+                <script src="~/assets/vendor/apexcharts/apexcharts.min.js"></script>
+                <script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+                <script src="~/assets/vendor/chart.js/chart.umd.js"></script>
+                <script src="~/assets/vendor/echarts/echarts.min.js"></script>
+                <script src="~/assets/vendor/quill/quill.js"></script>
+                <script src="~/assets/vendor/simple-datatables/simple-datatables.js"></script>
+                <script src="~/assets/vendor/tinymce/tinymce.min.js"></script>
+                <script src="~/assets/vendor/php-email-form/validate.js"></script>
+
+                @await RenderSectionAsync("Scripts", required: false)
+
+                <!-- Template Main JS File -->
+                <script src="~/assets/js/main.js"></script>
+
+
+@*         Remove data After   72hour
+ *@
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            loadComments();
+
+            document.getElementById('submitComment').addEventListener('click', function () {
+                var comment = document.getElementById('commentInput').value;
+                if (comment) {
+                    saveComment(comment);
+                    displayComment(comment);
+                    document.getElementById('commentInput').value = ''; // Clear the input
+                } else {
+                    alert('Please enter a comment before submitting.');
+                }
+            });
+        });
+
+        function saveComment(comment) {
+            var comments = JSON.parse(localStorage.getItem('comments')) || [];
+            comments.push({ text: comment, timestamp: Date.now() });
+            localStorage.setItem('comments', JSON.stringify(comments));
+        }
+
+        function loadComments() {
+            var comments = JSON.parse(localStorage.getItem('comments')) || [];
+            comments.forEach(function (comment) {
+                if (isCommentValid(comment.timestamp)) {
+                    displayComment(comment.text);
+                }
+            });
+            // Remove expired comments
+            var validComments = comments.filter(comment => isCommentValid(comment.timestamp));
+            localStorage.setItem('comments', JSON.stringify(validComments));
+        }
+
+        function displayComment(comment) {
+            var commentDisplay = document.getElementById('commentDisplay');
+            var newComment = document.createElement('p');
+            newComment.textContent = comment;
+            commentDisplay.appendChild(newComment);
+        }
+
+        function isCommentValid(timestamp) {
+            var currentTime = Date.now();
+            var timeDifference = currentTime - timestamp;
+            return timeDifference <= 72 * 60 * 60 * 1000; // 72 hours in milliseconds
+        }
+
+    </script>
+
+    </body>
+    </html>
