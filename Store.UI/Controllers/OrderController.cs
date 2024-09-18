@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Store.Infrastructure.Base;
 using Store.Infrastructure.DTO;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Store.UI.Controllers
@@ -67,7 +68,8 @@ namespace Store.UI.Controllers
 
                 if (response.IsSuccessStatusCode)
                 {
-                    return RedirectToAction("GetOrder");
+                    return RedirectToAction("GetOrder", new { id = cid });
+
                 }
                 else
                 {
@@ -139,27 +141,47 @@ namespace Store.UI.Controllers
             }
 
         }
-
-        public async Task<IActionResult> GetAllOrders()
+        //Update the GetOrders Report Form Admin
+        public async Task<IActionResult> GetAllOrders(DateTime? startDate, DateTime? endDate)
         {
             string url = _configuration.GetSection("APIURL").Value.ToString();
             try
             {
-                HttpClient client = new HttpClient();
-                var response = await client.GetAsync(url + "api/Order/GetAllOrders");
+                using HttpClient client = new HttpClient();
+                var response = await client.GetAsync(url + $"api/Order/GetAllOrders?startDate={startDate:yyyy-MM-dd}&endDate={endDate:yyyy-MM-dd}");
                 var apiResponse = await response.Content.ReadAsStringAsync();
 
-                // Deserialize directly into a list of OrderProductDTO
                 var result = JsonConvert.DeserializeObject<List<OrderProductDTO>>(apiResponse);
 
-                return View(result); // Pass the list of orders to the view
+                return View(result);
             }
             catch (Exception ex)
             {
-                // Log the exception if necessary
                 return View("Error");
             }
         }
+
+
+        //public async Task<IActionResult> GetAllOrders()
+        //{
+        //    string url = _configuration.GetSection("APIURL").Value.ToString();
+        //    try
+        //    {
+        //        HttpClient client = new HttpClient();
+        //        var response = await client.GetAsync(url + "api/Order/GetAllOrders");
+        //        var apiResponse = await response.Content.ReadAsStringAsync();
+
+        //        // Deserialize directly into a list of OrderProductDTO
+        //        var result = JsonConvert.DeserializeObject<List<OrderProductDTO>>(apiResponse);
+
+        //        return View(result); // Pass the list of orders to the view
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception if necessary
+        //        return View("Error");
+        //    }
+        //}
 
 
 
@@ -169,14 +191,14 @@ namespace Store.UI.Controllers
 
         // Define a class to match the JSON structure
 
-
+        //GetOrderUser
         public async Task<IActionResult> GetAllOrderUser(int id)
         {
             string url = _configuration.GetSection("APIURL").Value.ToString();
             try
             {
                 HttpClient client = new HttpClient();
-                var response = await client.GetAsync(url + "api/Order/GetAllOrderUser?id="+id);
+                var response = await client.GetAsync(url + "api/Order/GetAllOrderUser?id=" + id);
                 var apiResponse = await response.Content.ReadAsStringAsync();
                 var result = JsonConvert.DeserializeObject<List<Store.Infrastructure.DTO.CustomerOrderDTO>>(apiResponse);
                 return View(result);
@@ -202,7 +224,7 @@ namespace Store.UI.Controllers
                     new StringContent(ContextDTO, Encoding.UTF8, "application/json"));
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    return RedirectToAction("GetOrder");
+                    return RedirectToAction("GetOrder", new { id = orderDTO.CustomerId  });
 
                 }
                 else
@@ -217,7 +239,7 @@ namespace Store.UI.Controllers
             }
         }
 
-        public async Task<IActionResult> UpdateAdmin(Store.Infrastructure.DTO.Order orderDTO)
+        public async Task<IActionResult> UpdateAdmin(int id,Store.Infrastructure.DTO.Order orderDTO)
         {
             string url = _configuration.GetSection("APIURL").Value.ToString();
             try
@@ -225,7 +247,7 @@ namespace Store.UI.Controllers
                 HttpClient Client = new HttpClient();
 
                 var ContextDTO = JsonConvert.SerializeObject(orderDTO);
-                var response = await Client.PostAsync(url + "api/Order/UpdateOrderAdmin", new StringContent(ContextDTO, Encoding.UTF8, "application/json"));
+                var response = await Client.PostAsync(url + "api/Order/UpdateOrderAdmin?=", new StringContent(ContextDTO, Encoding.UTF8, "application/json"));
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     return RedirectToAction("GetAllOrder");
@@ -275,11 +297,12 @@ namespace Store.UI.Controllers
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     return RedirectToAction("GetAllOrder");
+
                 }
                 else
                 {
 
-                    return View("~/Views/Home/ErrorPage.cshtml");
+                    return View("");
 
                 }
 
@@ -288,10 +311,39 @@ namespace Store.UI.Controllers
             {
                 return View("Error");
             }
+        }
+        //Delet order user
 
+            public async Task<IActionResult> DeleteUser(int id , int cid)
+            {
+                string url = _configuration.GetSection("APIURL").Value.ToString();
+                try
+                {
+                    HttpClient Client = new HttpClient();
+
+                    var response = await Client.DeleteAsync(url + "api/Order/DeleteOrder?id=" + id);
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        return RedirectToAction("GetOrder",new {id=cid});
+
+                    }
+                    else
+                    {
+
+                        return View("");
+
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    return View("Error");
+                }
+
+
+            }
 
         }
-
     }
-}
+
 

@@ -11,7 +11,7 @@ namespace Store.UI.Controllers
 
        
 
-        public HomeController(IConfiguration configuration , ILogger<HomeController> logger) : base(configuration)
+        public HomeController(IConfiguration configuration , ILogger<HomeController> logger):base(configuration)
         {
             _logger = logger;
         }
@@ -25,6 +25,8 @@ namespace Store.UI.Controllers
         {
             return View();
         }
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

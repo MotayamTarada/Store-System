@@ -199,37 +199,26 @@
 
      <footer id="footer" class="footer">
          
-        @if (Convert.ToInt32(Id) == 18 || Convert.ToInt32(Id) == 19)
-        {
-            <div class="container">
-                <h2>Leave a Comment</h2>
-                <div class="mb-3">
-                    <input type="text" id="commentInput" class="form-control" placeholder="Enter your comment here">
-                </div>
-                <button id="submitComment" class="btn btn-primary">Submit</button>
-            </div>
-        }
+   
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
-                    <div class="copyright">
-                        &copy; <strong><span><img style="width:100px;height:50px" src="~/assets/img/innovatel.png" alt="Innovate Tech Logo" /></span></strong>. All Rights Reserved
-                    </div>
-                    <div class="credits">
-                        Designed by <a href="https://motayamtarada.github.io/InnovateTech/TnnovateTech.html">Innovate Tech</a>
-                    </div>
+                 
                     <div class="contact-info">
                         <p>
                             <img src="~/assets/img/AQU.png" alt="" width="35px" height="35px">
                             Dentist Corner Supplies
                         </p>
-                        <div class="card"> 
-                        <div class="comment-display" id="commentDisplay"></div>
-                        </div>
+                      
                         <p class="li bi-phone-flip">للاتصال والتواصل</p>
-                        <p class="li ri-whatsapp-line">WhatsApp: <a href="https://wa.me/972569658771">+972569658771</a></p>
+                        <p class="li ri-whatsapp-line">WhatsApp: <a href="https://wa.me/972569658771" style="color:blue">  +972569658771</a></p>
                     </div>
-                    <!-- Placeholder for showing the comment -->
+                    <div class="copyright">
+                        &copy; <strong><span><img style="width:100px;height:50px" src="~/assets/img/innovatel.png" alt="Innovate Tech Logo" /></span></strong>. All Rights Reserved
+                    </div>
+                    <div class="credits">
+                        Designed by <a href="https://motayamtarada.github.io/InnovateTech/TnnovateTech.html" style="color:blue">   Innovate Tech</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -251,56 +240,7 @@
                 <script src="~/assets/js/main.js"></script>
 
 
-@*         Remove data After   72hour
- *@
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            loadComments();
 
-            document.getElementById('submitComment').addEventListener('click', function () {
-                var comment = document.getElementById('commentInput').value;
-                if (comment) {
-                    saveComment(comment);
-                    displayComment(comment);
-                    document.getElementById('commentInput').value = ''; // Clear the input
-                } else {
-                    alert('Please enter a comment before submitting.');
-                }
-            });
-        });
-
-        function saveComment(comment) {
-            var comments = JSON.parse(localStorage.getItem('comments')) || [];
-            comments.push({ text: comment, timestamp: Date.now() });
-            localStorage.setItem('comments', JSON.stringify(comments));
-        }
-
-        function loadComments() {
-            var comments = JSON.parse(localStorage.getItem('comments')) || [];
-            comments.forEach(function (comment) {
-                if (isCommentValid(comment.timestamp)) {
-                    displayComment(comment.text);
-                }
-            });
-            // Remove expired comments
-            var validComments = comments.filter(comment => isCommentValid(comment.timestamp));
-            localStorage.setItem('comments', JSON.stringify(validComments));
-        }
-
-        function displayComment(comment) {
-            var commentDisplay = document.getElementById('commentDisplay');
-            var newComment = document.createElement('p');
-            newComment.textContent = comment;
-            commentDisplay.appendChild(newComment);
-        }
-
-        function isCommentValid(timestamp) {
-            var currentTime = Date.now();
-            var timeDifference = currentTime - timestamp;
-            return timeDifference <= 72 * 60 * 60 * 1000; // 72 hours in milliseconds
-        }
-
-    </script>
 
     </body>
     </html>

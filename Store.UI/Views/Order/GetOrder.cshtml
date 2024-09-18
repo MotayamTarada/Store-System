@@ -79,7 +79,8 @@
                                                 <td>@item.OrderDate.ToString("yyyy-MM-dd")</td>
                                                 <td>@item.Status</td>
                                                 <td style="font-size:18px">
-                                                    <a asp-controller="Order" asp-action="Delete" asp-route-id="@item.OrderId">
+                                                    
+                                                    <a asp-controller="Order" asp-action="DeleteUser" asp-route-id="@item.OrderId" asp-route-cid="@Id">
                                                         <img src="~/assets/img/trash.png" width="28px" height="30px" />
                                                     </a>
                                                 </td>

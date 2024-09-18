@@ -25,7 +25,7 @@
 
                     <div class="card">
                         <div class="card-body">
-                            <form asp-action="UpdateProduct" enctype="multipart/form-data">
+                            <form asp-action="UpdateProduct" method="patch" enctype="multipart/form-data">
                                 <div class="row">
                                     <div class="col-md-4">
 
@@ -70,13 +70,21 @@
                                     <div class="col-md-4">
                                         <label class="form-label">Acadimaic Year</label>
                                         <span class="text-danger">*</span>
-                                        <select class="form-select" asp-for="Id" asp-items="@(ViewBag.Acayear = new SelectList(ViewBag.Acayear,"Id","AcaYearcol"))">
-                                            <option value="">Select an option</option>
+                                        <select class="form-select" asp-for="Id"  asp-items="@(ViewBag.Acayear = new SelectList(ViewBag.Acayear,"Id","AcaYearcol")) ">
+                                            <option value=" ">Id</option>
                                         </select>
                                         <span asp-validation-for="Id" class="text-danger"></span>
+                                  </div>
+
+                                    <div class="col-md-4">
+                                        <input type="hidden" class="form-control" asp-for="ProductId" />
                                     </div>
 
-                               
+                                </div>
+                              
+
+       
+
                                 
                                 <div class="row">
                                     <label class="form-label"></label>

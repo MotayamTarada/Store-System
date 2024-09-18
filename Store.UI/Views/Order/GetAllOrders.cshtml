@@ -27,34 +27,51 @@
 <body>
     <div class="container mt-5">
         <h1>All Orders</h1>
+
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label for="startDate">Start Date:</label>
+                <input type="date" id="startDate" class="form-control" />
+            </div>
+            <div class="col-md-3">
+                <label for="endDate">End Date:</label>
+                <input type="date" id="endDate" class="form-control" />
+            </div>
+            <div class="col-md-3 align-self-end">
+                <button id="filterButton" class="btn btn-primary">Filter</button>
+            </div>
+        </div>
+
         <button id="printButton" class="btn btn-primary">Print</button>
+
         <div class="card">
-            <br/>
+            <br />
             <div class="card-body">
-        <table class="table table-striped mt-3" id="ordersTable">
-            <thead>
-                <tr>
-                    <th>Product ID</th>
-                    <th>Product Name</th>
-                    <th>Quantity</th>
-                    <th>Total Amount</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var order in Model)
-                {
-                    <tr>
-                        <td>@order.ProductId</td>
-                        <td>@order.ProductName</td>
-                        <td>@order.Quantity</td>
-                        <td>@order.TotalAmount</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                <table class="table table-striped mt-3" id="ordersTable">
+                    <thead>
+                        <tr>
+                            <th>Product ID</th>
+                            <th>Product Name</th>
+                            <th>Quantity</th>
+                            <th>Total Amount</th>
+                            <th>Order Date</th> <!-- Added Order Date column -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in Model)
+                        {
+                            <tr>
+                                <td>@order.ProductId</td>
+                                <td>@order.ProductName</td>
+                                <td>@order.Quantity</td>
+                                <td>NIS @order.TotalAmount</td>
+                                <td>@order.OrderDate.ToString("yyyy-MM-dd")</td> <!-- Format the date -->
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
-        </div>
-        <!-- Container for displaying the total amount -->
         <div id="totalAmount" class="mt-3">
             <strong>Total Amount:</strong> NIS 0.00
         </div>
@@ -62,6 +79,13 @@
 
     <script>
         $(document).ready(function () {
+            $('#filterButton').click(function () {
+                var startDate = $('#startDate').val();
+                var endDate = $('#endDate').val();
+                var url = '@Url.Action("GetAllOrders", "Order")' + '?startDate=' + startDate + '&endDate=' + endDate;
+                window.location.href = url;
+            });
+
             $('#printButton').click(function () {
                 window.print();
             });
@@ -76,8 +100,9 @@
             });
 
             // Display the total amount
-            $('#totalAmount').html('<strong>Total Amount:</strong> NIS   ' + totalAmount.toFixed(2));
+            $('#totalAmount').html('<strong>Total Amount:</strong> NIS ' + totalAmount.toFixed(2));
         });
     </script>
+
 </body>
 </html>

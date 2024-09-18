@@ -1,0 +1,246 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@{
+    Layout = null;
+    var customerId = ViewBag.UserId;
+
+}
+@model List<Store.Infrastructure.DTO.Product>
+
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.1/css/dataTables.bootstrap5.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.0/css/buttons.dataTables.css" />
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.1/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.0.1/js/dataTables.bootstrap5.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/3.0.0/js/dataTables.buttons.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.0/js/buttons.dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.0/js/buttons.print.min.js"></script>
+</head>
+<style>
+    /* Container background */
+    body {
+        background-color: #f0f2f5;
+        padding: 20px;
+    }
+
+    /* Card Style */
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: 1px solid #e1e4e8;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+        /* Hover effect to zoom and shadow */
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 16px rgba(0, 0, 0, 0.2);
+        }
+
+    /* Image Style */
+    .card-img-top {
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        transition: transform 0.3s ease-in-out;
+        object-fit: cover;
+    }
+
+    /* Zoom effect on image */
+    .card:hover .card-img-top {
+        transform: scale(1.1);
+    }
+
+    /* Card title and text styling */
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .card-text {
+        color: #555;
+    }
+
+    /* Button styling */
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+    .pagetitle {
+        text-align: center;
+        margin: 30px 0;
+        background-color: #c5dde8;
+        border-color: #c5dde8;
+        padding:10px;
+        border-radius:20px;
+        
+    }
+
+        .pagetitle p {
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 20px;
+
+        }
+
+    .auth-buttons {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+        .auth-buttons a {
+            color: white;
+            font-size: 1rem;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+    .btn-primary {
+        background-color: #0056b3;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background-color: #003f88;
+        }
+
+    .btn-outline-primary {
+        color: white;
+        background-color: #0056b3;
+    }
+
+        .btn-outline-primary:hover {
+            color: white;
+            background-color: #0056b3;
+        }
+
+    .footer {
+        background-color: #f8f9fa; /* Light grey background color */
+        padding: 20px 0;
+    }
+
+        .footer .contact-info p {
+            font-family: Arial, sans-serif; /* Change this to your preferred font */
+            font-weight: bold;
+            color: #333;
+        }
+
+
+</style>
+<script>
+    $(document).ready(function () {
+        // Add fade-in effect for cards
+        $('.card').hide().fadeIn(1000);
+
+        // Optionally, add click effect to scale card
+        $('.card').on('click', function () {
+            $(this).toggleClass('active');
+        });
+
+        // Add/remove shadow on hover
+        $('.card').hover(function () {
+            $(this).css('box-shadow', '0 12px 16px rgba(0, 0, 0, 0.2)');
+        }, function () {
+            $(this).css('box-shadow', '0 4px 6px rgba(0, 0, 0, 0.1)');
+        });
+    });
+</script>
+<body>
+
+    <div class="container-fluid">
+        <div class="pagetitle">
+            <p>عميلنا الكريم! هذه الصفحة لعرض المنتجات، إذا أردت الشراء عليك زيارة الموقع</p>
+
+            <div class="auth-buttons">
+                <a asp-controller="Customer" asp-action="login" class="btn btn-primary mx-2">Sign In</a>
+
+                <a class="btn btn-outline-primary mx-2" asp-controller="Customer" asp-action="Index">
+                    <i class="bi bi-person-add"></i> Registration
+                </a>
+            </div>
+
+           
+        </div>
+
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                @if (@item.Id == 2)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card" style="width: 100%;">
+                            <img src="@Url.Content("~/Files/" + item.Image)" class="card-img-top" alt="Product Image" style="height: 200px; object-fit: cover;" />
+                            <div class="card-body">
+                                <h5 class="card-title">@item.Name</h5>
+                                <p class="card-text">@item.BriefDescription</p>
+                                <p class="card-text"><strong>Price:</strong>  NIS @item.Price</p>
+                                <p class="card-text"><strong>Year:</strong> @item.Id</p>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    <hr />
+
+
+    <footer id="footer" class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+
+                    <div class="contact-info">
+                        <p>
+                            <img src="~/assets/img/AQU.png" alt="" width="35px" height="35px">
+                            Dentist Corner Supplies
+                        </p>
+                        <p>يوفر على موقعنا كل ما يلزم طالب طب الإنسان..</p>
+                        <p>(الأبراج) وبإقل الأسعار سهولة التعامل والاتصال الاستلام من كلية الانسان في جامعة القدس وعياداتها الخارجية</p>
+                        <p>
+                            أطلق هذا الموقع من أجل التسهيل
+                            عليكم تتوفرخدمة التوصيل لكل فلسطين
+                        </p>
+                        <p class="li bi-phone-flip">للاتصال والتواصل</p>
+                        <p class="li ri-whatsapp-line">WhatsApp: <a href="https://wa.me/972569658771">+972569658771</a></p>
+                    </div>
+                    <div class="copyright">
+                        &copy; <strong><span><img style="width:100px;height:50px" src="~/assets/img/innovatel.png" alt="Innovate Tech Logo" /></span></strong>. All Rights Reserved
+                    </div>
+                    <div class="credits">
+                        Designed by <a href="https://motayamtarada.github.io/InnovateTech/TnnovateTech.html">Innovate Tech</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer><!-- End Footer -->
+
+    <script>
+        // Any additional JavaScript can go here
+    </script>
+</body>
+</html>

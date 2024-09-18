@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Server.HttpSys;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -7,6 +9,7 @@ using Store.Infrastructure.Base;
 using System.Diagnostics;
 using System.IO;
 using System.Linq.Expressions;
+using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
@@ -22,7 +25,7 @@ namespace Store.UI.Controllers
 
       private readonly IConfiguration _configuration;
 
-        public ProductController(IConfiguration configuration): base(configuration) 
+        public ProductController(IConfiguration configuration) :base(configuration)
         {
             _configuration = configuration;
         }
@@ -312,8 +315,8 @@ namespace Store.UI.Controllers
             var acaYear = await client.GetAsync(url + "api/Product/GetAllAcaYear");
             string acaYearcontant = await acaYear.Content.ReadAsStringAsync();
             ViewBag.Acayear = JsonConvert.DeserializeObject<List<Store.Infrastructure.DTO.Acayear>>(acaYearcontant);
-
-            var response = await client.GetAsync(url + "api/Product/GetProductById?id=" + id);
+            
+            var response = await client.GetAsync(url + "api/Product/GetProductMidById?id=" + id);
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 var apiResponse = await response.Content.ReadAsStringAsync();
@@ -328,24 +331,29 @@ namespace Store.UI.Controllers
         }
 
 
-
-
-        public async Task<IActionResult> UpdateProduct(Infrastructure.DTO.Product product)
+        public async Task<IActionResult> UpdateProduct(Store.Infrastructure.DTO.ProductMid product)
         {
 
             string url = _configuration.GetSection("APIURL").Value.ToString();
-            HttpClient client = new HttpClient();
-
-            var ProductContext = JsonConvert.SerializeObject(product);
-
-            var respnse = await client.PostAsync(url + "api/Product/UpdateProduct", new StringContent(ProductContext, Encoding.UTF8, "application/json"));
-
-            if (respnse.StatusCode == System.Net.HttpStatusCode.OK)
+            try
             {
-                return RedirectToAction("GetAllProduct");
+                HttpClient Client = new HttpClient();
 
+                var ContextDTO = JsonConvert.SerializeObject(product);
+               
+                var response = await Client.PatchAsync(url + "api/Product/UpdateProduct?="+product.ProductId, new StringContent(ContextDTO, Encoding.UTF8, "application/json"));
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    return RedirectToAction("GetAllProduct");
+
+                }
+                else
+                {
+                    return View("~/Views/Home/ErrorPage.cshtml");
+
+                }
             }
-            else
+            catch (Exception ex)
             {
                 return View("~/Views/Home/ErrorPage.cshtml");
             }

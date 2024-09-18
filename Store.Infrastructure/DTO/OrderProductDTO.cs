@@ -12,6 +12,8 @@ namespace Store.Infrastructure.DTO
         public string ProductName { get; set; }
         public int Quantity { get; set; }
         public decimal TotalAmount { get; set; }
+        public DateTime OrderDate { get; set; } // Add OrderDate
+
     }
 
 }

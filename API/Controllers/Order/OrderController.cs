@@ -215,36 +215,61 @@ namespace Store.API.Controllers.Order
 
         //Reprot frome company 
 
+        //[HttpGet("GetAllOrders")]
+        //public IActionResult GetAllOrders()
+        //{
+        //    using (var context = new StoreSystemContext()) // Replace 'StoreSystemContext' with your actual DbContext name
+        //    {
+        //        var result = from order in context.Orders
+        //                     join product in context.Products
+        //                     on order.ProductId equals product.ProductId
+        //                     join customer in context.Customers
+        //                     on order.CustomerId equals customer.CustomerId
+        //                     group new { order, product} by new { product.ProductId, product.Name, product.Price } into grouped
+        //                     select new OrderProductDTO
+        //                     {
+        //                         ProductId = grouped.Key.ProductId,
+        //                         ProductName = grouped.Key.Name,
+        //                         Quantity = grouped.Sum(x => x.order.Quantity),
+        //                         TotalAmount = (decimal)grouped.Sum(x => x.order.Quantity * grouped.Key.Price) // Quantity * Price for TotalAmount
+        //                     };
+
+
+
+        //        return Ok(result.ToList());
+        //    }
+        //}
+
+        //Report from admin update 
+        //And its vary important 
         [HttpGet("GetAllOrders")]
-        public IActionResult GetAllOrders()
+        public IActionResult GetAllOrders(DateTime? startDate, DateTime? endDate)
         {
-            using (var context = new StoreSystemContext()) // Replace 'StoreSystemContext' with your actual DbContext name
+            using (var context = new StoreSystemContext())
             {
-                var result = from order in context.Orders
-                             join product in context.Products
-                             on order.ProductId equals product.ProductId
-                             join customer in context.Customers
-                             on order.CustomerId equals customer.CustomerId
-                             group new { order, product} by new { product.ProductId, product.Name, product.Price } into grouped
-                             select new OrderProductDTO
-                             {
-                                 ProductId = grouped.Key.ProductId,
-                                 ProductName = grouped.Key.Name,
-                                 Quantity = grouped.Sum(x => x.order.Quantity),
-                                 TotalAmount = (decimal)grouped.Sum(x => x.order.Quantity * grouped.Key.Price) // Quantity * Price for TotalAmount
-                             };
+                var query = from order in context.Orders
+                            join product in context.Products on order.ProductId equals product.ProductId
+                            join customer in context.Customers on order.CustomerId equals customer.CustomerId
+                            where (!startDate.HasValue || order.OrderDate >= startDate.Value) &&
+                                  (!endDate.HasValue || order.OrderDate <= endDate.Value)
+                            group new { order, product } by new { product.ProductId, product.Name, product.Price } into grouped
+                            select new OrderProductDTO
+                            {
+                                ProductId = grouped.Key.ProductId,
+                                ProductName = grouped.Key.Name,
+                                Quantity = grouped.Sum(x => x.order.Quantity),
+                                TotalAmount = (decimal)grouped.Sum(x => x.order.Quantity * grouped.Key.Price),
+                                OrderDate = grouped.Max(x => x.order.OrderDate) // Get the most recent order date
+                            };
 
-            
-
-                return Ok(result.ToList());
+                return Ok(query.ToList());
             }
         }
 
 
+            //Report From user 
 
-        //Report From user 
-
-        [HttpGet("GetAllOrderUser")]
+            [HttpGet("GetAllOrderUser")]
 
         public IActionResult GetAllOrderUser(int id)
         {

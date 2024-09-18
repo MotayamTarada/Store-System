@@ -65,12 +65,14 @@
                                                 <tr>
                                                     <td>@item.Name</td>
                                                     <td>@item.BriefDescription</td>
-                                                    <td>@item.Price</td>
+                                                    <td>
+                                                     @item.Price        
+                                                    </td>
+
                                                     <td>@item.Id</td> 
                                                    
                                                     <td style="font-size:18px">
-                                                        @* update later 
-                                                      <a asp-controller="Product" asp-action="Update" asp-route-ID="@item.ProductId"> <img src="~/assets/img/edit.png" width="30px" height="30px" /> </a> *@
+                                                      <a asp-controller="Product" asp-action="Update" asp-route-ID="@item.ProductId"> <img src="~/assets/img/edit.png" width="30px" height="30px" /> </a> 
                                                       <a asp-controller="Product" asp-action="Delete" asp-route-ID="@item.ProductId"> <img src="~/assets/img/trash.png" width="30px" height="30px" /></a>
                                                     </td>
                                                 </tr>

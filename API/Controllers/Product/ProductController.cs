@@ -8,6 +8,8 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Razor.Compilation;
 using static System.Net.Mime.MediaTypeNames;
+using Org.BouncyCastle.Utilities;
+using Store.DomainEntities;
 
 namespace Store.API.Controllers.Product
 {
@@ -77,49 +79,100 @@ namespace Store.API.Controllers.Product
         [HttpGet("GetProductById")]
         public IActionResult GetProductById(int id)
         {
-            DomainEntities.DBEntities.Product prodcut = new DomainEntities.DBEntities.Product();
-            prodcut = _productIRepository.GetById(id);
+            // Retrieve the product by ID
+            var product = _productIRepository.GetById(id);
 
-            Infrastructure.DTO.Product productDTO = new Infrastructure.DTO.Product();
+            if (product == null)
+            {
+                return NotFound(); // Return a 404 response if the product is not found
+            }
 
-            productDTO.ProductId = prodcut.ProductId;
-            productDTO.Name = prodcut.Name;
-            productDTO.Price = prodcut.Price;
-            productDTO.Remark = prodcut.Remark;
-            productDTO.Quantity = prodcut.Quantity;
-            productDTO.BriefDescription = prodcut.BriefDescription;
-            productDTO.Id = prodcut.Id.Value;
-            productDTO.Image = prodcut.Image;
+            // Map the product entity to a DTO
+            var productDTO = new Infrastructure.DTO.Product
+            {
+                ProductId = product.ProductId,
+                Name = product.Name,
+                Price = product.Price,
+                Remark = product.Remark,
+                Quantity = product.Quantity,
+                BriefDescription = product.BriefDescription,
+                Id = product.Id.HasValue ? product.Id.Value : 0,
+                Image = product.Image,
+                
 
+            };
 
             return Ok(productDTO);
         }
 
 
-        [HttpPost("UpdateProduct")]
-        public IActionResult UpdateProduct(Infrastructure.DTO.Product productDTO)
+
+
+        [HttpGet("GetProductMidById")]
+        public IActionResult GetProductMidById(int id)
         {
-            DomainEntities.DBEntities.Product product = new DomainEntities.DBEntities.Product();
+            // Retrieve the product by ID
+            var product = _productIRepository.GetById(id);
+
+            if (product == null)
+            {
+                return NotFound(); // Return a 404 response if the product is not found
+            }
+
+            // Map the product entity to a DTO
+            var productDTO = new Infrastructure.DTO.ProductMid
+            {
+                ProductId = product.ProductId,
+                Name = product.Name,
+                Price = product.Price,
+                Remark = product.Remark,
+                Quantity = product.Quantity,
+                BriefDescription = product.BriefDescription,
+             
+
+
+            };
+
+            return Ok(productDTO);
+        }
+
+
+
+        [HttpPatch("UpdateProduct")]
+        public IActionResult UpdateProduct([FromBody] Infrastructure.DTO.ProductMid productDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             try
             {
-                product = _productIRepository.GetById(productDTO.ProductId);
+                var product = _productIRepository.GetById(productDTO.ProductId);
+                if (product == null)
+                {
+                    return NotFound("Product not found");
+                }
 
-                product.ProductId = productDTO.ProductId;
+                // Update the product properties
                 product.Name = productDTO.Name;
                 product.Price = productDTO.Price;
                 product.Remark = productDTO.Remark;
                 product.Quantity = productDTO.Quantity;
                 product.BriefDescription = productDTO.BriefDescription;
                 product.Id = productDTO.Id;
-
+                
                 _productIRepository.Update(product);
-                return Ok("Success");
+                return Ok("Product updated successfully");
             }
             catch (Exception ex)
             {
-                return BadRequest("Fail");
+                // Log the exception details
+                return BadRequest($"Failed to update product: {ex.Message}");
             }
         }
+
+
 
         [HttpGet("Index")]
         public IActionResult Index()
